@@ -6,7 +6,9 @@ import {
   Param,
   Patch,
   Post,
-  NotFoundException
+  NotFoundException,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
 import { TasksService } from "./tasks.service";
 import { Task } from "./task.model";
@@ -30,17 +32,19 @@ export class TasksController {
   }
 
   @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   createTask(@Body() task: Task) {
     return this.tasksService.createTask(task);
   }
 
   @Patch(":id")
+  @UsePipes(new ValidationPipe({ whitelist: true }))
   updateTask(@Param("id") id: string, @Body() task: Task) {
     const updatedTask = this.tasksService.updateTask(id, task);
     if (!updatedTask) {
       throw new NotFoundException(`Resource with id ${id} not found`);
     }
-    return updatedTask
+    return updatedTask;
   }
 
   @Delete(":id")

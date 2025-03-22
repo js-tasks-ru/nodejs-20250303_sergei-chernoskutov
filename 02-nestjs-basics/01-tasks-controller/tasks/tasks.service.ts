@@ -11,7 +11,7 @@ export class TasksService {
   }
 
   getTaskById(id: string): Task | null {
-    return this.tasks.find((task) => task.id === id);
+    return this.tasks.find((task) => task.id === id) || null;
   }
 
   createTask(task: Task): Task {
@@ -25,7 +25,7 @@ export class TasksService {
 
   updateTask(id: string, update: Task): Task {
     const index = this.tasks.findIndex((task) => task.id === id);
-    const tasks = JSON.parse(JSON.stringify(this.tasks));
+    const tasks = [...this.tasks];
     tasks[index] = { ...tasks[index], ...update };
     this.setTasks(tasks);
 

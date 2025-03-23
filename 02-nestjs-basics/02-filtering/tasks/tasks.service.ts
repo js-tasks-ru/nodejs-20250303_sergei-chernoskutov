@@ -55,20 +55,20 @@ export class TasksService {
   }
 
   private getSortedTasks(tasks: Task[], sortBy: TaskSortedFields) {
-    function sortByStatus(tasks: Task[]) {
+    function sortByStatus(tasks: Task[]): Task[] {
       const statusOrder = {
         [TaskStatus.COMPLETED]: 1,
         [TaskStatus.IN_PROGRESS]: 2,
         [TaskStatus.PENDING]: 3,
       };
 
-      return tasks.toSorted(
+      return tasks.sort(
         (a, b) => statusOrder[a.status] - statusOrder[b.status],
       );
     }
 
-    function sortByTitle(tasks: Task[]) {
-      return tasks.toSorted((task1: Task, task2: Task) =>
+    function sortByTitle(tasks: Task[]): Task[] {
+      return tasks.sort((task1: Task, task2: Task) =>
         task1.title >= task2.title ? 1 : -1,
       );
     }

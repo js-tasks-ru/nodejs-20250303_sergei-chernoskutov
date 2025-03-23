@@ -6,6 +6,11 @@ export enum TaskStatus {
   COMPLETED = "completed",
 }
 
+export enum TaskSortedFields {
+  TITLE = "title",
+  STATUS = "status",
+}
+
 export class Task {
   id?: string;
 

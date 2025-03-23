@@ -1,16 +1,23 @@
-import { IsString, IsInt, Min, IsOptional, IsEnum } from "class-validator";
+import {
+  IsString,
+  IsInt,
+  Min,
+  IsOptional,
+  IsEnum,
+} from "class-validator";
 import { Type } from "class-transformer";
-import { TaskStatus } from "./task.model";
+import { TaskStatus, TaskSortedFields } from "./task.model";
 
 export class GetTasksQueryParamsModel {
   @IsString()
   @IsEnum(TaskStatus)
   @IsOptional()
-  status?: string;
+  status?: TaskStatus;
 
   @IsString()
+  @IsEnum(TaskSortedFields)
   @IsOptional()
-  sortBy?: string;
+  sortBy?: TaskSortedFields;
 
   @IsInt()
   @Min(1)

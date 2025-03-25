@@ -72,4 +72,59 @@ describe("TasksModule (e2e)", () => {
 
     expect(response.body).toEqual([]);
   });
+
+  it("GET /tasks?sortBy=title (should return tasks sorted by title)", async () => {
+    const response = await request(app.getHttpServer())
+      .get("/tasks?sortBy=title")
+      .expect(200);
+
+    expect(response.body).toEqual([
+                                    expect.objectContaining({ title: "Task 1" }),
+                                    expect.objectContaining({ title: "Task 2" }),
+                                    expect.objectContaining({ title: "Task 3" }),
+                                    expect.objectContaining({ title: "Task 4" }),
+                                    expect.objectContaining({ title: "Task 5" }),
+                                  ]);
+    expect(response.body.length).toBe(5);
+  });
+
+  it("GET /tasks?sortBy=status (should return tasks sorted by status)", async () => {
+    const response = await request(app.getHttpServer())
+      .get("/tasks?sortBy=status")
+      .expect(200);
+
+    expect(response.body).toEqual([
+                                    expect.objectContaining({ title: "Task 3" }),
+                                    expect.objectContaining({ title: "Task 2" }),
+                                    expect.objectContaining({ title: "Task 5" }),
+                                    expect.objectContaining({ title: "Task 1" }),
+                                    expect.objectContaining({ title: "Task 4" }),
+                                  ]);
+    expect(response.body.length).toBe(5);
+  });
+
+  it("GET /tasks?sortBy=status&page=1&limit=3 (should return tasks sorted by status and paginated)", async () => {
+    const response = await request(app.getHttpServer())
+      .get("/tasks?sortBy=status&page=1&limit=3")
+      .expect(200);
+
+    expect(response.body).toEqual([
+                                    expect.objectContaining({ title: "Task 3" }),
+                                    expect.objectContaining({ title: "Task 2" }),
+                                    expect.objectContaining({ title: "Task 5" }),
+                                  ]);
+    expect(response.body.length).toBe(3);
+  });
+
+  it("GET /tasks?sortBy=status&status=pending&page=1&limit=2 (should return filtered and sorted by status and paginated tasks)", async () => {
+    const response = await request(app.getHttpServer())
+      .get("/tasks?sortBy=status&status=pending&page=1&limit=3")
+      .expect(200);
+
+    expect(response.body).toEqual([
+                                    expect.objectContaining({ title: "Task 1" }),
+                                    expect.objectContaining({ title: "Task 4" }),
+                                  ]);
+    expect(response.body.length).toBe(2);
+  });
 });
